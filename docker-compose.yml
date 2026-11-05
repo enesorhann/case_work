@@ -43,7 +43,7 @@ services:
       RabbitMq__UserName: guest
       RabbitMq__Password: guest
     volumes:
-      - dpp-data:/app/data
+      - dpp-data:/app/Data
     depends_on:
       redis:
         condition: service_healthy
