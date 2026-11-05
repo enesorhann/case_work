@@ -1,0 +1,26 @@
+# Codespaces içinde çalışan servisler: uygulama + Redis + RabbitMQ
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/dotnet:8.0
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    environment:
+      Redis__ConnectionString: redis:6379
+      RabbitMq__HostName: rabbitmq
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      DOTNET_NOLOGO: "1"
+    depends_on:
+      - redis
+      - rabbitmq
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest

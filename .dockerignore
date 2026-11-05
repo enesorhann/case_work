@@ -1,0 +1,9 @@
+.git
+**/bin
+**/obj
+wwwroot
+frontend/node_modules
+data/*.db*
+data/qr
+MiniDpp.Tests
+.devcontainer

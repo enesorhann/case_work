@@ -1,0 +1,30 @@
+{
+  // GitHub Codespaces: bilgisayara hiçbir şey kurmadan, tarayıcıdan çalıştırmak için.
+  // Açılışta .NET 8, Node.js, Redis ve RabbitMQ hazırlanır; uygulama kendiliğinden başlar.
+  "name": "Mini DPP",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "shutdownAction": "stopCompose",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "forwardPorts": [8080, "rabbitmq:15672"],
+  "portsAttributes": {
+    "8080": { "label": "Mini DPP", "onAutoForward": "openBrowser" },
+    "rabbitmq:15672": { "label": "RabbitMQ paneli (guest/guest)", "onAutoForward": "silent" }
+  },
+
+  // Bir kez: paketleri indir, React arayüzünü derle
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  // Her açılışta: uygulamayı başlat
+  "postAttachCommand": { "app": "bash .devcontainer/start.sh" },
+
+  "customizations": {
+    "codespaces": { "openFiles": ["README.md"] },
+    "vscode": { "extensions": ["ms-dotnettools.csharp"] }
+  }
+}

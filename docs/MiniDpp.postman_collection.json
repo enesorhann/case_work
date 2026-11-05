@@ -1,0 +1,270 @@
+{
+  "info": {
+    "name": "MiniDpp",
+    "description": "Mini DPP API. Önce 'CSV içe aktar' isteğinde dosyayı seçip çalıştırın.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "gtin",
+      "value": "08690000000012"
+    },
+    {
+      "key": "jobId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Import",
+      "item": [
+        {
+          "name": "CSV içe aktar (anında)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/import",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "import"
+              ]
+            },
+            "description": "Geçerli satırları kaydeder, hatalı satırları satır numarası ve nedeniyle döner.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "data/urunler_duzeltilmis_test.csv",
+                  "description": "Postman'de dosyayı seçin: data/urunler_duzeltilmis_test.csv"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CSV içe aktar (RabbitMQ ile arka planda)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/import/jobs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "import",
+                "jobs"
+              ]
+            },
+            "description": "202 + job_id döner. job_id koleksiyon değişkenine yazılır.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "data/urunler_duzeltilmis_test.csv",
+                  "description": "Postman'de dosyayı seçin: data/urunler_duzeltilmis_test.csv"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('jobId', body.job_id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Arka plan işinin durumu",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/import/jobs/{{jobId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "import",
+                "jobs",
+                "{{jobId}}"
+              ]
+            },
+            "description": "PENDING / STARTED / SUCCESS / FAILURE"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Ürün listesi",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "description": "Kayıtlı ürünler"
+          }
+        },
+        {
+          "name": "Ürünün önceki sürümleri",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{gtin}}/versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{gtin}}",
+                "versions"
+              ]
+            },
+            "description": "Bonus: sürüm geçmişi"
+          }
+        }
+      ]
+    },
+    {
+      "name": "DPP",
+      "item": [
+        {
+          "name": "HTML pasaport (tüketici)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dpp/{{gtin}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dpp",
+                "{{gtin}}"
+              ]
+            },
+            "description": "Karbon değeri gizli"
+          }
+        },
+        {
+          "name": "HTML pasaport (yetkili)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dpp/{{gtin}}?rol=yetkili",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dpp",
+                "{{gtin}}"
+              ],
+              "query": [
+                {
+                  "key": "rol",
+                  "value": "yetkili"
+                }
+              ]
+            },
+            "description": "Karbon değeri görünür"
+          }
+        },
+        {
+          "name": "JSON-LD (tüketici)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dpp/{{gtin}}.jsonld",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dpp",
+                "{{gtin}}.jsonld"
+              ]
+            },
+            "description": "schema.org/Product"
+          }
+        },
+        {
+          "name": "JSON-LD (yetkili)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dpp/{{gtin}}.jsonld?rol=yetkili",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dpp",
+                "{{gtin}}.jsonld"
+              ],
+              "query": [
+                {
+                  "key": "rol",
+                  "value": "yetkili"
+                }
+              ]
+            },
+            "description": "Karbon dahil"
+          }
+        },
+        {
+          "name": "QR kod (PNG)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dpp/{{gtin}}/qr.png",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dpp",
+                "{{gtin}}",
+                "qr.png"
+              ]
+            },
+            "description": "HTML pasaport adresine yönlenen QR kod"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+gtin,urun_adi,model_adi,batch_no,uretim_yeri,elyaf_pamuk_yuzde,elyaf_elastan_yuzde,karbon_kg_co2e
+08691234500019,Klasik Mavi Jean,Slim Fit 501,B2026-001,"Denizli, Türkiye",98,2,12.4
+8691234500019,Sıfırı silinmiş GTIN,Slim Fit 501,B2026-006,"Denizli, Türkiye",98,2,12.4
+08691234500018,Kontrol basamağı hatalı,Slim Fit 501,B2026-007,"Denizli, Türkiye",98,2,12.4
+08691234500026,Toplam 100 değil,Regular Fit 505,B2026-002,"İzmir, Türkiye",90,5,11.8
+08691234500033,,,B2026-003,"Denizli, Türkiye",95,5,-3
+08691234500040,Elyaf sayısal değil,Mom Fit 301,,"Bursa, Türkiye",yuz,0,abc
+08691234500057,Gri Straight Jean,Straight 514,B2026-005,"İstanbul, Türkiye",97.5,2.5,12.0

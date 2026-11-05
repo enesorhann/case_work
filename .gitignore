@@ -1,0 +1,18 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+.vscode/
+
+# React derleme çıktısı (npm run build -> wwwroot)
+wwwroot/
+frontend/node_modules/
+
+# Çalışma sırasında oluşan veriler
+data/*.db
+data/*.db-*
+data/qr/
+
+.env
+dump.rdb
