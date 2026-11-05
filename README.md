@@ -54,6 +54,9 @@ testler de .NET 10 SDK ile otomatik olarak `net10.0` hedefiyle derlenir.
 
 ## 2. Kurulum — adım adım
 
+> Codespaces arayüzü Türkçe ya da İngilizce olabilir; bu bölümde menü ve sekme adları
+> **İngilizce (Türkçe)** şeklinde verilmiştir, ör. **Ports (Bağlantı Noktaları)**.
+
 ### A) Hiçbir şey kurmadan: GitHub Codespaces (önerilen)
 
 Uygulama GitHub'ın bulut makinesinde çalışır, siz tarayıcıdan kullanırsınız. Bilgisayarınızın işletim sistemi önemli
@@ -62,33 +65,74 @@ otomatik kurulur.
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enesorhann/case_work?quickstart=1)
 
-1. **Codespace'i açın:** GitHub'a giriş yapın ve yukarıdaki **Open in GitHub Codespaces** düğmesine basın
-   (ya da repo sayfasında **Code → Codespaces → Create codespace on main**).
+1. **Codespace'i açın:** GitHub'a giriş yapın ve yukarıdaki **Open in GitHub Codespaces (GitHub Codespaces'te aç)**
+   düğmesine basın. Ya da repo sayfasında **Code (Kod) → Codespaces → Create codespace on main (main dalında codespace oluştur)**.
 2. **Bekleyin:** ilk açılışta kurulum 2–4 dakika sürer. Bu sırada React arayüzü derlenir, .NET paketleri indirilir.
-   Sonra uygulama **kendiliğinden başlar**; terminalde `Now listening on: http://localhost:8080` yazısını görürsünüz.
-3. **Uygulamayı açın:** genelde yeni sekmede kendiliğinden açılır. Açılmazsa alttaki **Ports** sekmesinde
-   **Mini DPP (8080)** satırındaki 🌐 simgesine basın. Adres şu biçimdedir: `https://<codespace-adı>-8080.app.github.dev`
-4. **Ödev CSV'sini yükleyin:** arayüzde dosya seçip **Yükle** deyin. Dosya cihazınızda yoksa Codespace'te yeni bir
-   terminal açıp (**Terminal → New Terminal** ya da terminal panelindeki **+**) şunu çalıştırın, sonra sayfayı yenileyin:
+   Sonra uygulama **kendiliğinden başlar**; alttaki **Terminal** sekmesinde
+   `Now listening on: http://localhost:8080` yazısını görürsünüz.
+3. **Uygulamayı açın:** genelde yeni sekmede kendiliğinden açılır ya da sağ altta **Open in Browser (Tarayıcıda Aç)**
+   bildirimi çıkar. Açılmazsa alttaki **Ports (Bağlantı Noktaları)** sekmesinde **Mini DPP (8080)** satırındaki 🌐
+   simgesine basın. Adres şu biçimdedir: `https://<codespace-adı>-8080.app.github.dev`
+4. **Ödev CSV'sini yükleyin:** arayüzde **Örnek CSV ile dene** düğmesine basın ya da dosya seçip yükleyin.
+   Terminalden yüklemek için **Terminal → New Terminal (Yeni Terminal)** ile ya da terminal panelindeki **+** ile
+   yeni bir terminal açıp şunu çalıştırın, sonra sayfayı yenileyin:
 
    ```bash
    curl -F "file=@Data/urunler_duzeltilmis_test.csv" localhost:8080/api/import
    ```
 
-5. **QR kodu telefonla okutmak için:** başlangıç betiği 8080 portunu otomatik olarak **Public** yapmayı dener ve sonucu
-   terminale yazar. Olmadıysa **Ports** sekmesinde 8080'e sağ tıklayın (telefonda basılı tutun) →
-   **Port Visibility → Public**. Aksi halde QR'ı okutan cihazdan GitHub girişi istenir.
+5. **QR kodu telefonla okutmak için:** başlangıç betiği 8080 portunu otomatik olarak **Public (Genel)** yapmayı dener
+   ve sonucu terminale yazar. Olmadıysa **Ports (Bağlantı Noktaları)** sekmesinde 8080'e sağ tıklayın
+   (telefonda basılı tutun) → **Port Visibility (Bağlantı Noktası Görünürlüğü) → Public (Genel)**.
+   Aksi halde QR'ı okutan cihazdan GitHub girişi istenir.
    QR kodlar Codespaces adresiyle üretilir; bunun için ayrıca bir ayar yapmanız gerekmez.
+
+#### Uygulama kendiliğinden başlamazsa: elle kurulum ve başlatma
+
+**Ports (Bağlantı Noktaları)** listesi boşsa, **Terminal** sekmesinde `Now listening on` yazısı yoksa ya da sayfada
+"React arayüzü derlenmemiş" yazıyorsa aşağıdaki komutun **tamamını tek seferde** terminale yapıştırın:
+
+```bash
+cd /workspaces/case_work \
+&& git pull \
+&& (cd frontend && npm install && npm run build) \
+&& test -f wwwroot/index.html \
+&& { pkill -f MiniDpp; sleep 2; bash .devcontainer/start.sh; }
+```
+
+Komut sırasıyla: son kodu çeker → React arayüzünü derler → derlemenin oluştuğunu kontrol eder → açık kalmış eski
+uygulamayı kapatır → uygulamayı yeniden başlatır. Bir adım hata verirse sonraki adımlara geçmez ve hatayı ekranda bırakır.
+
+- Komut uygulamayı başlattıktan sonra terminali meşgul tutar; **bu terminali kapatmayın**.
+- `Now listening on: http://localhost:8080` yazısı çıkınca uygulama hazırdır. Redis, RabbitMQ ve AutoMapper için
+  çıkan uyarılar uygulamayı durdurmaz.
+- 8080 portu **Ports (Bağlantı Noktaları)** sekmesine kendiliğinden eklenmezse: **Ports (Bağlantı Noktaları)** →
+  **Forward a Port (Bağlantı Noktası İlet)** → `8080` yazıp Enter → satırdaki 🌐 simgesi.
+- Adresi terminalden de öğrenebilirsiniz. **+** ile ikinci bir terminal açın (ilkinde uygulama çalışıyor) ve şunu yazın:
+
+  ```bash
+  echo https://$CODESPACE_NAME-8080.$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
+  ```
+
+Hata çıkarsa:
+
+| Belirti | Çözüm |
+|---|---|
+| Sayfada "React arayüzü derlenmemiş" yazıyor | Arayüz derlenmemiş ya da eski uygulama açık kalmış: yukarıdaki komutu tekrar çalıştırın ve `npm` adımında hata olup olmadığına bakın |
+| `npm install` ya da `npm run build` hata verdi | Komut orada durur; hata mesajındaki dosya ya da paket adını kontrol edin (`git pull` ile son kodu çektiğinizden emin olun) |
+| `address already in use` (8080 kullanımda) | Eski uygulama açık: `pkill -f MiniDpp` ve ardından `bash .devcontainer/start.sh` |
+| `table "..." already exists` | Eski veritabanı dosyası kalmış: `rm -f Data/dpp.db*` ve ardından `bash .devcontainer/start.sh` |
 
 Notlar:
 - **Kapatıp açınca:** Codespace'i daha sonra tekrar açtığınızda uygulama yine kendiliğinden başlar. Kullanılmayan
   Codespace bir süre sonra kendi kendine durur. Kişisel GitHub hesaplarında aylık ücretsiz kullanım kotası vardır;
   işiniz bitince [github.com/codespaces](https://github.com/codespaces) sayfasından Codespace'i silebilirsiniz.
-- **Bu ayarlar eklenmeden önce açılmış bir Codespace'iniz varsa:** yeni bir Codespace oluşturun ya da
-  `Ctrl/Cmd + Shift + P` → **Codespaces: Rebuild Container** çalıştırın. Eski Python sürümünden kalan bir
-  `Data/dpp.db` dosyası varsa silin: `rm -f Data/dpp.db*`.
-- **Uygulamayı elle başlatmak** gerekirse (ör. terminali kapattıysanız): `bash .devcontainer/start.sh`
-- **RabbitMQ yönetim paneli:** Ports sekmesindeki **RabbitMQ paneli** satırından açılır (`guest` / `guest`).
+- **`.devcontainer` ayarları eklenmeden önce açılmış bir Codespace'iniz varsa:** yeni bir Codespace oluşturun ya da
+  `Ctrl/Cmd + Shift + P` ile **Command Palette (Komut Paleti)** açıp
+  **Codespaces: Rebuild Container (Kapsayıcıyı Yeniden Oluştur)** komutunu çalıştırın.
+- **Uygulamayı yeniden başlatmak** gerekirse (ör. terminali kapattıysanız): `bash .devcontainer/start.sh`
+- **RabbitMQ yönetim paneli:** **Ports (Bağlantı Noktaları)** sekmesindeki **RabbitMQ paneli** satırından açılır
+  (`guest` / `guest`).
 
 ### B) Docker ile
 
@@ -110,14 +154,14 @@ Notlar:
 
 3. **Tarayıcıda açın:** http://localhost:8080
 
-4. **Ödev CSV'sini yükleyin:** arayüzde dosya seçip **Yükle** deyin ya da:
+4. **Ödev CSV'sini yükleyin:** arayüzde **Örnek CSV ile dene** düğmesine basın, dosya seçip yükleyin ya da:
 
    ```bash
    curl -F "file=@Data/urunler_duzeltilmis_test.csv" http://localhost:8080/api/import
    ```
 
 > VS Code kullanıyorsanız aynı `.devcontainer` ayarlarıyla projeyi kendi bilgisayarınızdaki Docker içinde de
-> açabilirsiniz: **Dev Containers** eklentisi → **Reopen in Container**.
+> açabilirsiniz: **Dev Containers** eklentisi → **Reopen in Container (Kapsayıcıda Yeniden Aç)**.
 
 ### C) Docker olmadan
 
@@ -141,7 +185,7 @@ Tarayıcıda: http://localhost:8080. Komutlar macOS, Linux ve Windows'ta (CMD ya
 | React arayüz | http://localhost:8080 | `https://<codespace-adı>-8080.app.github.dev` | — |
 | API (Swagger) | http://localhost:8080/swagger | `…-8080.app.github.dev/swagger` | — |
 | HTML pasaport örneği | http://localhost:8080/dpp/08690000000012 | `…-8080.app.github.dev/dpp/08690000000012` | — |
-| RabbitMQ yönetim paneli | http://localhost:15672 | Ports sekmesi → **RabbitMQ paneli** | `guest` / `guest` |
+| RabbitMQ yönetim paneli | http://localhost:15672 | **Ports (Bağlantı Noktaları)** sekmesi → **RabbitMQ paneli** | `guest` / `guest` |
 | Redis | `localhost:6379` | Codespace içinde `redis:6379` | — |
 
 ## 4. Çalıştırma notları
