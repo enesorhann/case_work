@@ -5,7 +5,7 @@ COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 COPY frontend/ ./
 # "Örnek CSV ile dene" düğmesi ödev CSV'sini derleme sırasında arayüze gömer
-COPY data/urunler_duzeltilmis_test.csv /src/data/
+COPY Data/urunler_duzeltilmis_test.csv /src/Data/
 RUN npm run build
 
 # 2) ASP.NET Core API'yi derle

@@ -10,9 +10,9 @@ wwwroot/
 frontend/node_modules/
 
 # Çalışma sırasında oluşan veriler
-data/*.db
-data/*.db-*
-data/qr/
+Data/*.db
+Data/*.db-*
+Data/qr/
 
 .env
 dump.rdb

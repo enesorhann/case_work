@@ -44,8 +44,8 @@
                 {
                   "key": "file",
                   "type": "file",
-                  "src": "data/urunler_duzeltilmis_test.csv",
-                  "description": "Postman'de dosyayı seçin: data/urunler_duzeltilmis_test.csv"
+                  "src": "Data/urunler_duzeltilmis_test.csv",
+                  "description": "Postman'de dosyayı seçin: Data/urunler_duzeltilmis_test.csv"
                 }
               ]
             }
@@ -74,8 +74,8 @@
                 {
                   "key": "file",
                   "type": "file",
-                  "src": "data/urunler_duzeltilmis_test.csv",
-                  "description": "Postman'de dosyayı seçin: data/urunler_duzeltilmis_test.csv"
+                  "src": "Data/urunler_duzeltilmis_test.csv",
+                  "description": "Postman'de dosyayı seçin: Data/urunler_duzeltilmis_test.csv"
                 }
               ]
             }

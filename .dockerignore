@@ -3,7 +3,7 @@
 **/obj
 wwwroot
 frontend/node_modules
-data/*.db*
-data/qr
+Data/*.db*
+Data/qr
 MiniDpp.Tests
 .devcontainer

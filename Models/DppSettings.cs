@@ -7,7 +7,7 @@ namespace MiniDpp.Models
 
         // QR kodun ve JSON-LD @id alanının kullandığı dış adres
         public string BaseUrl { get; set; } = DefaultBaseUrl;
-        public string QrFolder { get; set; } = "data/qr";
+        public string QrFolder { get; set; } = "Data/qr";
         public int CacheSeconds { get; set; } = 300;
         public long MaxUploadBytes { get; set; } = 5 * 1024 * 1024;
     }

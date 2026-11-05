@@ -9,11 +9,11 @@ namespace MiniDpp.Tests
             get
             {
                 var folder = new DirectoryInfo(AppContext.BaseDirectory);
-                while (folder != null && !Directory.Exists(Path.Combine(folder.FullName, "data")))
+                while (folder != null && !Directory.Exists(Path.Combine(folder.FullName, "Data")))
                 {
                     folder = folder.Parent;
                 }
-                return Path.Combine(folder!.FullName, "data");
+                return Path.Combine(folder!.FullName, "Data");
             }
         }
 

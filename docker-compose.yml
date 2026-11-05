@@ -34,9 +34,9 @@ services:
       - "8080:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__DefaultConnection: "Data Source=/app/data/dpp.db"
+      ConnectionStrings__DefaultConnection: "Data Source=/app/Data/dpp.db"
       Dpp__BaseUrl: http://localhost:8080
-      Dpp__QrFolder: /app/data/qr
+      Dpp__QrFolder: /app/Data/qr
       Redis__ConnectionString: redis:6379
       RabbitMq__HostName: rabbitmq
       RabbitMq__Port: 5672

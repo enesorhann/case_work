@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    // "Örnek CSV ile dene" için ../data klasöründeki dosya okunabilsin
+    // "Örnek CSV ile dene" için ../Data klasöründeki dosya okunabilsin
     fs: { allow: [".."] },
     proxy: {
       "/api": backend,
