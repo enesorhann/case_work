@@ -1,0 +1,100 @@
+@model PassportViewModel
+@{
+    var passport = Model.Passport;
+    ViewData["Title"] = passport.DisplayName;
+    var cotton = ProductRowValidator.Format(passport.CottonPercent);
+    var elastane = ProductRowValidator.Format(passport.ElastanePercent);
+}
+
+<article class="card">
+    <div class="head">
+        <span class="eyebrow">Dijital Ürün Pasaportu</span>
+        <span class="badge">GS1 doğrulandı</span>
+        @if (Model.IsAuthorized)
+        {
+            <span class="badge role auth">Yetkili görünüm</span>
+        }
+        else
+        {
+            <span class="badge role">Tüketici görünümü</span>
+        }
+        <h1>@passport.DisplayName</h1>
+        <div class="meta">
+            <span>GTIN-14 <b class="mono">@passport.Gtin</b></span>
+            <span>·</span>
+            <span>Sürüm @passport.Version</span>
+            <span>·</span>
+            <span>Güncelleme: @passport.UpdatedAt.ToString("yyyy-MM-dd HH:mm") UTC</span>
+        </div>
+    </div>
+
+    <div class="facts">
+        <div class="fact"><div class="l">Model</div><div class="v">@passport.ModelName</div></div>
+        <div class="fact"><div class="l">Batch / Lot</div><div class="v mono">@string.Join(", ", passport.Batches.Select(b => b.BatchNumber))</div></div>
+        <div class="fact"><div class="l">Üretim yeri</div><div class="v">@string.Join(", ", passport.Batches.Select(b => b.ProductionPlace).Distinct())</div></div>
+    </div>
+
+    <div class="sect">
+        <div class="l">Elyaf bileşimi</div>
+        <div class="comp" aria-hidden="true">
+            <span class="c1" style="width: @(cotton)%"></span><span class="c2" style="width: @(elastane)%"></span>
+        </div>
+        <div class="legend">
+            <span><i style="background: var(--primary)"></i>Pamuk %@cotton</span>
+            <span><i style="background: var(--seg2)"></i>Elastan %@elastane</span>
+        </div>
+    </div>
+
+    @if (passport.ShowCarbon)
+    {
+        <div class="carbon open">
+            <div class="tx"><b>Karbon ayak izi</b><span>Yetkili görünüm · karbon_kg_co2e</span></div>
+            <div class="big">@ProductRowValidator.Format(passport.CarbonKgCo2e!.Value) <small>kg CO₂e</small></div>
+        </div>
+    }
+    else
+    {
+        <div class="carbon locked">
+            <div class="tx"><b>Karbon ayak izi</b><span>Bu alan yalnızca yetkili görünümde gösterilir.</span></div>
+        </div>
+    }
+
+    @if (passport.Batches.Count > 1)
+    {
+        <table>
+            <tr><th>Batch / Lot</th><td><b>Üretim yeri</b></td></tr>
+            @foreach (var batch in passport.Batches)
+            {
+                <tr><th class="mono">@batch.BatchNumber</th><td>@batch.ProductionPlace</td></tr>
+            }
+        </table>
+    }
+
+    <div class="qr" style="border-top: 1px solid var(--border)">
+        <img src="/dpp/@passport.Gtin/qr.png" alt="Bu sayfaya yönlendiren QR kod" width="140" height="140">
+        <div>
+            <b>QR kod</b>
+            <div class="meta">Bu sayfanın adresine yönlendirir.</div>
+        </div>
+    </div>
+</article>
+
+<div class="links">
+    <a class="btn p" href="/dpp/@(passport.Gtin).jsonld@(Model.RoleQuery)">JSON-LD çıktısı</a>
+    @if (Model.IsAuthorized)
+    {
+        <a class="btn" href="/dpp/@passport.Gtin">Tüketici görünümü</a>
+    }
+    else
+    {
+        <a class="btn" href="/dpp/@passport.Gtin?rol=yetkili">Yetkili görünüm (demo)</a>
+    }
+</div>
+
+<details>
+    <summary>Sayfaya gömülü JSON-LD</summary>
+    <pre>@Model.JsonLd</pre>
+</details>
+
+@* JsonLdBuilder <, > ve & karakterlerini kaçırdığı için script içine güvenle gömülebilir. *@
+<script type="application/ld+json">@Html.Raw(Model.JsonLd)</script>
